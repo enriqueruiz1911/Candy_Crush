@@ -26,6 +26,31 @@ void  displayGrid (const mat & grid)
     cout << "|"<<endl;
     }
 }
+
+void makeAMove(mat & grid, const maPosition & pos, const char & direction)
+{
+    maPosition newPos = pos;
+    
+    // Déterminer la nouvelle position
+    if (direction == 'z') {
+        newPos.ord = pos.ord - 1;  // Haut
+    }
+    else if (direction == 's') {
+        newPos.ord = pos.ord + 1;  // Bas
+    }
+    else if (direction == 'q') {
+        newPos.abs = pos.abs - 1;  // Gauche
+    }
+    else if (direction == 'd') {
+        newPos.abs = pos.abs + 1;  // Droite
+    }
+    
+    // Permuter les valeurs entre pos et newPos
+    unsigned temp = grid[pos.ord][pos.abs];
+    grid[pos.ord][pos.abs] = grid[newPos.ord][newPos.abs];
+    grid[newPos.ord][newPos.abs] = temp;
+}
+
 void clearScreen () 
 {   
     cout << "\033[H\033[2J";
