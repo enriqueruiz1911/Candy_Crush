@@ -7,7 +7,14 @@ struct maPosition {
 unsigned abs;
 unsigned ord;
 }; // une position dans la girlle
-void initGrid (mat & grid, const size_t & size){}
+void initGrid (mat & grid, const size_t & size)
+{
+    grid.resize(size);
+    for(size_t i = 0; i < size; ++i)
+    {
+        grid[i].resize(size, 0);
+    }
+}
 void  displayGrid (const mat & grid)
 {
     for(int i = 0;i<3;++i)
