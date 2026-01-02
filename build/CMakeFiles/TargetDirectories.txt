@@ -1,0 +1,3 @@
+/home/azeyrox/Documents/GitHub/Candy_Crush/build/CMakeFiles/Candy_Crush.dir
+/home/azeyrox/Documents/GitHub/Candy_Crush/build/CMakeFiles/edit_cache.dir
+/home/azeyrox/Documents/GitHub/Candy_Crush/build/CMakeFiles/rebuild_cache.dir
