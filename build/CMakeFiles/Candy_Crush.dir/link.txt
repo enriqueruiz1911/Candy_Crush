@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Candy_Crush.dir/Candy_Crusg.cpp.o -o Candy_Crush 

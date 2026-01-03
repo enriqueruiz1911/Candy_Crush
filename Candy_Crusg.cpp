@@ -1,54 +1,221 @@
 #include <iostream>
 #include <vector>
+#include <random>
+int nbBonBons(0);
+int sizemat(0);
+const unsigned KReset(0);
+const unsigned KNoir(30);
+const unsigned KRouge(31);
+const unsigned KVert(32);
+const unsigned KJaune(33);
+const unsigned KBleu(34);
+const unsigned KMAgenta(35);
+const unsigned KCyan(36);
+unsigned howMany(0);
+int Compteur(5);
 using namespace std;
-typedef vector <unsigned> line; // un type représentant une ligne de la grille
-typedef vector <line> mat; // un type représentant la grille
-struct maPosition { 
-unsigned abs;
-unsigned ord;
+int Score(0);
+typedef vector<unsigned> line; // un type représentant une ligne de la grille
+typedef vector<line> mat;      // un type représentant la grille
+struct maPosition
+{
+    unsigned abs;
+    unsigned ord;
 }; // une position dans la girlle
-void initGrid (mat & grid, const size_t & size)
+void couleur(const unsigned &coul)
 {
-    grid.resize(size);
-    for(size_t i = 0; i < size; ++i)
-    {
-        grid[i].resize(size, 0);
-    }
+    cout << "\033[" << coul << "m";
 }
-void  displayGrid (const mat & grid)
+void initGrid(mat &grid, const size_t &sizemat)
 {
-    for(int i = 0;i<3;++i)
+    srand(time(0));
+    if (nbBonBons >= 10 || nbBonBons <= 0)
     {
-        for(int j = 0;j<3;++i)
+        cerr << "Nombre de bonbons invalide" << endl;
+        exit(1);
+    }
+    grid.resize(sizemat);
+    for (int i = 0; i < sizemat; ++i)
+    {
+        for (int j = 0; j < sizemat; j++)
         {
-            cout<< mat[i+j];
+            grid[i].push_back((rand() % nbBonBons) + 1);
         }
-    cout << "|"<<endl;
     }
 }
-void clearScreen () 
-{   
+void displayGrid(const mat &grid)
+{
+    for (int i = 0; i < sizemat; ++i)
+    {
+        cout << "|";
+        for (int j = 0; j < sizemat; ++j)
+        {
+            unsigned valeur = grid[i][j];
+            switch (valeur)
+            {
+            case 0:
+                couleur(KRouge);
+                break;
+            case 1:
+                couleur(KVert);
+                break;
+            case 2:
+                couleur(KJaune);
+                break;
+            case 3:
+                couleur(KBleu);
+                break;
+            case 4:
+                couleur(KMAgenta);
+                break;
+            case 5:
+                couleur(KCyan);
+                break;
+            case 6:
+                couleur(KNoir);
+                break;
+            }
+            cout << valeur;
+            couleur(KReset);
+            cout << "|";
+        }
+        cout << endl;
+    }
+}
+void clearScreen()
+{
     cout << "\033[H\033[2J";
 }
-const unsigned KReset   (0);
-const unsigned KNoir    (30);
-const unsigned KRouge   (31);
-const unsigned KVert    (32);
-const unsigned KJaune   (33);
-const unsigned KBleu    (34);
-const unsigned KMAgenta (35);
-const unsigned KCyan    (36);
-     
-void couleur (const unsigned & coul) {
-    cout << "\033[" << coul <<"m";
-}
-
-int main ()
+bool atLeastThreeInAColumn(mat &grid, maPosition &pos, unsigned &howMany)
 {
-    couleur (KRouge);
-    cout << "Rouge" << endl;
-    couleur (KVert);
-    cout << "Vert" << endl;
-    couleur (KReset);
-    cout << "Retour à la normale" << endl;
+    unsigned count(1);
+    unsigned valeur = grid[pos.ord][pos.abs];
+    for (unsigned i = pos.ord + 1; i < sizemat; ++i)
+    {
+        if (grid[i][pos.abs] == valeur)
+        {
+            ++count;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if (count >= 3)
+    {
+        howMany = count;
+        Score += howMany * valeur;
+        return true;
+    }
+    else
+    {
+        howMany = 0;
+        return false;
+    }
+}
+bool atLeastThreeInARow(mat &grid, maPosition &pos, unsigned &howMany)
+{
+    unsigned count(1);
+    unsigned valeur = grid[pos.ord][pos.abs];
+    for (unsigned j = pos.abs + 1; j < sizemat; ++j)
+    {
+        if (grid[pos.ord][j] == valeur)
+        {
+            ++count;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if (count >= 3)
+    {
+        howMany = count;
+        Score += howMany * valeur;
+        return true;
+    }
+    else
+    {
+        howMany = 0;
+        return false;
+    }
+}
+void Remove(mat &matrice)
+{
+    unsigned howMany;
+    maPosition pos;
+
+    for (int i = 0; i < sizemat; ++i)
+    {
+        for (int j = 0; j < sizemat; ++j)
+        {
+            pos.ord = i;
+            pos.abs = j;
+
+            if (atLeastThreeInAColumn(matrice, pos, howMany))
+            {
+                for (int k = 0; k < howMany; ++k)
+                {
+                    matrice[i + k][j] = 0;
+                }
+            }
+
+            if (atLeastThreeInARow(matrice, pos, howMany))
+            {
+                for (int k = 0; k < howMany; ++k)
+                {
+                    matrice[i][j + k] = 0;
+                }
+            }
+        }
+    }
+}
+void gravite(mat &grid)
+{
+    for (int j = 0; j < sizemat; ++j)
+    {
+        int indexEcriture = sizemat - 1;
+        for (int i = sizemat - 1; i >= 0; --i)
+        {
+            if (grid[i][j] != 0)
+            {
+                grid[indexEcriture][j] = grid[i][j];
+                if (indexEcriture != i)
+                {
+                    grid[i][j] = 0;
+                }
+                --indexEcriture;
+            }
+        }
+    }
+}
+void NouvBonbons(mat &grid)
+{
+    for (int i = 0; i < sizemat; ++i)
+    {
+        for (int j = 0; j < sizemat; ++j)
+            if (grid[i][j] == 0)
+            {
+                grid[i][j] = ((rand() % nbBonBons) + 1);
+            }
+    }
+    displayGrid(grid);
+    displayGrid(grid);
+}
+int main()
+{
+    cout << "Saisir un nombre de bonbons inferieur a 10" << endl;
+    cin >> nbBonBons;
+    cout << "Taille de la Matrice" << endl;
+    cin >> sizemat;
+    mat matrice;
+    initGrid(matrice, sizemat);
+    cout << endl;
+    cout << "Score: " << Score << endl;
+    NouvBonbons(matrice);
+    gravite(matrice);
+    Remove(matrice);
+    cout << "Score: " << Score << endl;
+    displayGrid(matrice);
+    return 0;
 }

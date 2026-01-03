@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/azeyrox/Documents/GitHub/Candy_Crush/build",
+  "command": "/usr/bin/c++   -g -std=gnu++17 -o CMakeFiles/Candy_Crush.dir/Candy_Crusg.cpp.o -c /home/azeyrox/Documents/GitHub/Candy_Crush/Candy_Crusg.cpp",
+  "file": "/home/azeyrox/Documents/GitHub/Candy_Crush/Candy_Crusg.cpp",
+  "output": "CMakeFiles/Candy_Crush.dir/Candy_Crusg.cpp.o"
+}
+]
