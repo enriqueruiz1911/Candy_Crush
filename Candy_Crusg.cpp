@@ -43,6 +43,49 @@ void initGrid(mat &grid, const size_t &sizemat)
         }
     }
 }
+void initMove(maPosition &pos)
+{
+    cout << "Entrez une ordonnée (Ligne) : ";
+    cin >> pos.ord;
+    cout << "Entrez une abscisse (Colonne) : ";
+    cin >> pos.abs;
+    if (pos.ord >= sizemat || pos.abs >= sizemat)
+    {
+        cout << "/!\\ Position hors de la grille ! On remet a 0." << endl;
+        pos.ord = 0;
+        pos.abs = 0;
+    }
+}
+void MakeAMove(mat &grid, maPosition &pos)
+{
+    char direction;
+    cout << "Entrez la direction du déplacement (Z/Q/S/D) : ";
+    cin >> direction;
+    if (direction == 'Z' && pos.ord > 0) // Haut
+    {
+        swap(grid[pos.ord][pos.abs], grid[pos.ord - 1][pos.abs]);
+        pos.ord -= 1;
+    }
+    else if (direction == 'S' && pos.ord < sizemat - 1) // Bas
+    {
+        swap(grid[pos.ord][pos.abs], grid[pos.ord + 1][pos.abs]);
+        pos.ord += 1;
+    }
+    else if (direction == 'Q' && pos.abs > 0) // Gauche
+    {
+        swap(grid[pos.ord][pos.abs], grid[pos.ord][pos.abs - 1]);
+        pos.abs -= 1;
+    }
+    else if (direction == 'D' && pos.abs < sizemat - 1) // Droite
+    {
+        swap(grid[pos.ord][pos.abs], grid[pos.ord][pos.abs + 1]);
+        pos.abs += 1;
+    }
+    else
+    {
+        cout << "Déplacement invalide!" << endl;
+    }
+}
 void displayGrid(const mat &grid)
 {
     for (int i = 0; i < sizemat; ++i)
@@ -88,8 +131,15 @@ void clearScreen()
 }
 bool atLeastThreeInAColumn(mat &grid, maPosition &pos, unsigned &howMany)
 {
+    // Sécurité anti-crash et logique
+    if (pos.ord >= sizemat || pos.abs >= sizemat)
+        return false;
     unsigned count(1);
     unsigned valeur = grid[pos.ord][pos.abs];
+    if (valeur == 0)
+    {
+        return false;
+    }
     for (unsigned i = pos.ord + 1; i < sizemat; ++i)
     {
         if (grid[i][pos.abs] == valeur)
@@ -199,23 +249,59 @@ void NouvBonbons(mat &grid)
                 grid[i][j] = ((rand() % nbBonBons) + 1);
             }
     }
-    displayGrid(grid);
-    displayGrid(grid);
+}
+int Menu()
+{
+    int choix;
+    cout << "===========================" << endl;
+    cout << "   CANDY CRUSH TERMINAL    " << endl;
+    cout << "===========================" << endl;
+    cout << "1. Mode Infini" << endl;
+    cout << "2. Mode Objectif (1000 pts)" << endl;
+    cout << "3. Mode Limite (20 coups)" << endl;
+    cout << "4. Mode Histoire";
+    cout << "===========================" << endl;
+    cout << "Votre choix : " << endl;
+    cin >> choix;
+    return choix;
 }
 int main()
 {
-    cout << "Saisir un nombre de bonbons inferieur a 10" << endl;
-    cin >> nbBonBons;
-    cout << "Taille de la Matrice" << endl;
-    cin >> sizemat;
-    mat matrice;
-    initGrid(matrice, sizemat);
-    cout << endl;
-    cout << "Score: " << Score << endl;
-    NouvBonbons(matrice);
-    gravite(matrice);
-    Remove(matrice);
-    cout << "Score: " << Score << endl;
-    displayGrid(matrice);
+    int mode = Menu();
+
+    if (mode == 1) // Mode Infini
+    {
+        cout << "Taille matrice : " << endl;
+        cin >> sizemat;
+        cout << "Nb Bonbons : " << endl;
+        cin >> nbBonBons;
+
+        mat matrice;
+        initGrid(matrice, sizemat);
+        maPosition pos = {0, 0}; // Initialisation importante !
+
+        while (true)
+        {
+            clearScreen();
+            cout << "Score : " << Score << endl;
+            displayGrid(matrice);
+            while (atLeastThreeInAColumn = true || atLeastThreeInARow = true)
+            {
+                atLeastThreeInAColumn(matrice, pos);
+                atLeastThreeInARow(matrice, pos);
+                Remove(matrice);
+            }
+            // 1. Le joueur joue
+            initMove(pos);           // Choisir la case
+            MakeAMove(matrice, pos); // Choisir la direction et échanger
+
+            // 2. On calcule les conséquences (Réaction en chaine)
+            // On le fait plusieurs fois tant qu'il y a des changements (optionnel mais mieux)
+            Remove(matrice);      // Supprime les alignements
+            gravite(matrice);     // Fait tomber
+            NouvBonbons(matrice); // Remplit
+        }
+    }
+    // ... autres modes ...
     return 0;
 }
