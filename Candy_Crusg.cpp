@@ -27,7 +27,7 @@ void couleur(const unsigned &coul)
 void initGrid(mat &grid, const size_t &sizemat)
 {
     srand(time(0));
-    if (sizemat > 10)
+    if (sizemat > 10 || sizemat == 0)
     {
         cerr << "Taille de la matrice invalide" << endl;
         exit(1);
@@ -37,7 +37,7 @@ void initGrid(mat &grid, const size_t &sizemat)
     {
         for (int j = 0; j < sizemat; j++)
         {
-            grid[i].push_back(rand() % (nbBonBons + 1));
+            grid[i].push_back((rand() % nbBonBons) + 1);
         }
     }
 }
@@ -75,8 +75,9 @@ void displayGrid(const mat &grid)
             }
             cout << valeur;
             couleur(KReset);
+            cout << "|";
         }
-        cout << "|" << endl;
+        cout << endl;
     }
 }
 void clearScreen()
@@ -137,6 +138,37 @@ bool atLeastThreeInARow(const mat &grid, maPosition &pos, unsigned &howMany)
         return false;
     }
 }
+void gravite(mat &grid)
+{
+    for (int j = 0; j < sizemat; ++j)
+    {
+        int indexEcriture = sizemat - 1;
+        for (int i = sizemat - 1; i >= 0; --i)
+        {
+            if (grid[i][j] != 0)
+            {
+                grid[indexEcriture][j] = grid[i][j];
+                if (indexEcriture != i)
+                {
+                    grid[i][j] = 0;
+                }
+                --indexEcriture;
+            }
+        }
+    }
+}
+void NouvBonbons(mat &grid)
+{
+    for (int i = 0; i < sizemat; ++i)
+    {
+        for (int j = 0; j < sizemat; ++j)
+            if (grid[i][j] == 0)
+            {
+                grid[i][j] = ((rand() % nbBonBons) + 1);
+            }
+    }
+    displayGrid(grid);
+}
 int main()
 {
     cout << "Saisir un nombre de bonbons inferieur a 10" << endl;
@@ -145,5 +177,9 @@ int main()
     cin >> sizemat;
     mat matrice;
     initGrid(matrice, sizemat);
+    gravite(matrice);
     displayGrid(matrice);
+    cout << endl;
+    cout << "Score: " << Score << endl;
+    NouvBonbons(matrice);
 }
