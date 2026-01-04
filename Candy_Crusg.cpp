@@ -15,21 +15,21 @@ unsigned howMany(0);
 int Compteur(5);
 using namespace std;
 int Score(0);
-typedef vector<unsigned> line; // un type représentant une ligne de la grille
-typedef vector<line> mat;      // un type représentant la grille
+typedef vector<unsigned> line;
+typedef vector<line> mat;
 struct maPosition
 {
     unsigned abs;
     unsigned ord;
-}; // une position dans la girlle
+};
 void couleur(const unsigned &coul)
 {
     cout << "\033[" << coul << "m";
 }
-void initGrid(mat &grid, const size_t &sizemat)
+void initGrid(mat &grid, const size_t &sizemat) // fonction permettant d'assigner un chiffre à chaque case
 {
     srand(time(0));
-    if (nbBonBons >= 10 || nbBonBons <= 0)
+    if (nbBonBons >= 7 || nbBonBons <= 0)
     {
         cerr << "Nombre de bonbons invalide" << endl;
         exit(1);
@@ -37,6 +37,7 @@ void initGrid(mat &grid, const size_t &sizemat)
     grid.resize(sizemat);
     for (int i = 0; i < sizemat; ++i)
     {
+        grid[i].clear();
         for (int j = 0; j < sizemat; j++)
         {
             grid[i].push_back((rand() % nbBonBons) + 1);
@@ -45,57 +46,38 @@ void initGrid(mat &grid, const size_t &sizemat)
 }
 void initMove(maPosition &pos)
 {
-    cout << "Entrez une ordonnée (Ligne) : ";
-    cin >> pos.ord;
-    cout << "Entrez une abscisse (Colonne) : ";
-    cin >> pos.abs;
-    if (pos.ord >= sizemat || pos.abs >= sizemat)
+    do
     {
-        cout << "Les coordonnées sont hors de la grille " << endl;
-        pos.ord = 0;
-        pos.abs = 0;
-    }
+        cout << "Entrez une ordonnée (Ligne) : ";
+        cin >> pos.ord;
+        cout << "Entrez une abscisse (Colonne) : ";
+        cin >> pos.abs;
+        if (pos.ord >= sizemat || pos.abs >= sizemat)
+        {
+            cout << "Coordonnées invalides ! Elles doivent être entre 0 et " << sizemat - 1 << "." << endl;
+        }
+    } while (pos.ord >= sizemat || pos.abs >= sizemat);
 }
 void MakeAMove(mat &grid, maPosition &pos)
 {
     char direction;
     cout << "Entrez la direction du déplacement (Z/Q/S/D) : ";
     cin >> direction;
-<<<<<<< HEAD:main.cpp
-
-    // Convertir en majuscule si nécessaire
-    direction = toupper(direction);
-
-    maPosition newPos = pos; // Position cible
-
-    if (direction == 'z' && pos.ord > 0) // Haut
-=======
-    if (direction == 'Z' || 'z' && pos.ord > 0) // Haut
->>>>>>> b1addb5bf5aed959b1b61d1e3374b81deb8044fa:Candy_Crusg.cpp
+    maPosition newPos = pos;                                   // Position cible
+    if ((direction == 'Z' || direction == 'z') && pos.ord > 0) // Haut
     {
         newPos.ord -= 1;
     }
-<<<<<<< HEAD:main.cpp
-    else if (direction == 's' && pos.ord < sizemat - 1) // Bas
-=======
-    else if (direction == 'S' || 's' && pos.ord < sizemat - 1) // Bas
->>>>>>> b1addb5bf5aed959b1b61d1e3374b81deb8044fa:Candy_Crusg.cpp
+    else if ((direction == 'S' || direction == 's') && pos.ord < sizemat - 1) // Bas
     {
         newPos.ord += 1;
     }
-<<<<<<< HEAD:main.cpp
-    else if (direction == 'q' && pos.abs > 0) // Gauche
-=======
-    else if (direction == 'Q' || 'q' && pos.abs > 0) // Gauche
->>>>>>> b1addb5bf5aed959b1b61d1e3374b81deb8044fa:Candy_Crusg.cpp
+    else if ((direction == 'Q' || direction == 'q') && pos.abs > 0) // Gauche
     {
         newPos.abs -= 1;
     }
-<<<<<<< HEAD:main.cpp
-    else if (direction == 'd' && pos.abs < sizemat - 1) // Droite
-=======
-    else if (direction == 'D' || 'd' && pos.abs < sizemat - 1) // Droite
->>>>>>> b1addb5bf5aed959b1b61d1e3374b81deb8044fa:Candy_Crusg.cpp
+
+    else if ((direction == 'D' || direction == 'd') && pos.abs < sizemat - 1) // Droite
     {
         newPos.abs += 1;
     }
@@ -107,17 +89,16 @@ void MakeAMove(mat &grid, maPosition &pos)
 
     // Échanger les bonbons
     swap(grid[pos.ord][pos.abs], grid[newPos.ord][newPos.abs]);
-
 }
-void displayGrid(const mat &grid)
+void displayGrid(const mat &grid) // Afficher la Matrice
 {
     for (int i = 0; i < sizemat; ++i)
     {
-        cout << "|";
+        cout << "|"; // séparer les chiffres
         for (int j = 0; j < sizemat; ++j)
         {
             unsigned valeur = grid[i][j];
-            switch (valeur)
+            switch (valeur) // couleur selon le chiffre
             {
             case 0:
                 couleur(KRouge);
@@ -148,13 +129,28 @@ void displayGrid(const mat &grid)
         cout << endl;
     }
 }
+void displayGridH(mat &grid) // afficher matrice pour le mode hardcore
+{
+    for (int i = 0; i < sizemat; ++i)
+    {
+        couleur(KRouge);
+        cout << "|";
+        for (int j = 0; j < sizemat; ++j)
+        {
+            int valeur = grid[i][j];
+            cout << valeur;
+            cout << "|";
+        }
+        cout << endl;
+        couleur(KReset);
+    }
+}
 void clearScreen()
 {
     cout << "\033[H\033[2J";
 }
-bool atLeastThreeInAColumn(mat &grid, maPosition &pos, unsigned &howMany)
+bool atLeastThreeInAColumn(mat &grid, maPosition &pos, unsigned &howMany) // Trois d'affile colone
 {
-    // Sécurité anti-crash et logique
     if (pos.ord >= sizemat || pos.abs >= sizemat)
         return false;
     unsigned count(1);
@@ -186,7 +182,7 @@ bool atLeastThreeInAColumn(mat &grid, maPosition &pos, unsigned &howMany)
         return false;
     }
 }
-bool atLeastThreeInARow(mat &grid, maPosition &pos, unsigned &howMany)
+bool atLeastThreeInARow(mat &grid, maPosition &pos, unsigned &howMany) // Trois d'affile ligne
 {
     unsigned count(1);
     unsigned valeur = grid[pos.ord][pos.abs];
@@ -213,7 +209,7 @@ bool atLeastThreeInARow(mat &grid, maPosition &pos, unsigned &howMany)
         return false;
     }
 }
-void Remove(mat &matrice)
+void Remove(mat &matrice) // remplacer les Trois ou plus d'affilé par des zéros
 {
     unsigned howMany;
     maPosition pos;
@@ -243,7 +239,7 @@ void Remove(mat &matrice)
         }
     }
 }
-void gravite(mat &grid)
+void gravite(mat &grid) // faire monter les zéros et descendre les autres
 {
     for (int j = 0; j < sizemat; ++j)
     {
@@ -262,7 +258,7 @@ void gravite(mat &grid)
         }
     }
 }
-void NouvBonbons(mat &grid)
+void NouvBonbons(mat &grid) // renouveler les zéros en d'autres bonbons
 {
     for (int i = 0; i < sizemat; ++i)
     {
@@ -273,7 +269,7 @@ void NouvBonbons(mat &grid)
             }
     }
 }
-int Menu()
+int Menu() // Menu
 {
     int choix;
     cout << "===========================" << endl;
@@ -289,143 +285,302 @@ int Menu()
     cin >> choix;
     return choix;
 }
+void Infini(mat &grid) // Mode Infini
+{
+    maPosition pos = {0, 0};
+    cout << "Taille matrice : " << endl;
+    cin >> sizemat;
+    cout << "Nb Bonbons (inferieur ou égal à 6): " << endl;
+    cin >> nbBonBons;
+    initGrid(grid, sizemat);
+    while (true)
+    {
+        clearScreen();
+        cout << "Score : " << Score << endl;
+        displayGrid(grid);
+        Remove(grid);
+        initMove(pos);        // Choisir la case
+        MakeAMove(grid, pos); // Choisir la direction et écents (optionnel mais mieux)
+        Remove(grid);         // Supprime les alignements
+        gravite(grid);        // Fait tomber
+        NouvBonbons(grid);    // Remplit
+    }
+}
+void Speedrun(mat &grid) // Mode Speedrun
+{
+    sizemat = 6;
+    nbBonBons = 5;
+    int difficulte;
+    maPosition pos{0, 0};
+    cout << "Choisissez une difficulté" << endl;
+    cout << "-------------------------" << endl;
+    cout << "1. Facile 200 pts" << endl;
+    cout << "2. Medieum 500 pts" << endl;
+    cout << "3. Difficile 1000 pts" << endl;
+    cout << "-------------------------" << endl;
+    cin >> difficulte;
+    int objectif;
+    initGrid(grid, sizemat);
+    switch (difficulte)
+    {
+    case 1:
+        objectif = 200;
+        break;
+    case 2:
+        objectif = 500;
+        break;
+    case 3:
+        objectif = 1000;
+        break;
+    default:
+        cout << "Mauvais choix";
+    }
+    int i = 0;
+    while (Score < difficulte)
+    {
+        ++i;
+        clearScreen();
+        displayGrid(grid);
+        cout << "Score :" << Score << endl;
+        cout << "Nombre de tour :" << i << endl;
+        initMove(pos);
+        MakeAMove(grid, pos);
+        Remove(grid);
+        gravite(grid);
+        NouvBonbons(grid);
+    }
+    cout << "Bravo ! Vous avez gagné !";
+}
+void Limite(mat grid) // Mode Limite
+{
+    int difficulte;
+    int obj;
+    cout << "Choississez une difficulté" << endl;
+    cout << "--------------------------" << endl;
+    cout << "1. Facile (10 coups pour faire 75)" << endl;
+    cout << "2. Medieum (10 coups pour faire 100)" << endl;
+    cout << "3. Difficile (10 couprs pour faire 120)" << endl;
+    cin >> difficulte;
+    switch (difficulte)
+    {
+    case 1:
+        obj = 75;
+        break;
+    case 2:
+        obj = 100;
+        break;
+    case 3:
+        obj = 120;
+        break;
+    }
+    maPosition pos{0, 0};
+    int compteur = 10;
+    sizemat = 6;
+    nbBonBons = 5;
+    initGrid(grid, sizemat);
+    while (compteur > 0)
+    {
+        clearScreen();
+        cout << "Nombre de coups Restants :" << compteur << endl;
+        cout << "Score :" << Score << endl;
+        displayGrid(grid);
+        initMove(pos);
+        MakeAMove(grid, pos);
+        Remove(grid);
+        gravite(grid);
+        NouvBonbons(grid);
+        --compteur;
+    }
+    if (Score < obj)
+    {
+        cout << "Bien joué ! Vous avez gagné avec un score de " << Score << "points" << endl;
+    }
+    else
+    {
+        cout << "Vous avez perdu... La prochaine fois vous reviendrez encore plus fort !" << endl;
+    }
+}
+void Hardcore(mat grid) // Mode HardCore
+{
+    int compteur = 10;
+    int difficulte;
+    sizemat = 6;
+    nbBonBons = 5;
+    int obj;
+    maPosition pos{0, 0};
+    cout << "Choississez une difficulté" << endl;
+    cout << "--------------------------" << endl;
+    cout << "1. Facile (10 coups pour faire 75)" << endl;
+    cout << "2. Medieum (10 coups pour faire 100)" << endl;
+    cout << "3. Difficile (10 couprs pour faire 120)" << endl;
+    cin >> difficulte;
+    initGrid(grid, sizemat);
+    switch (difficulte)
+    {
+    case 1:
+        obj = 75;
+        break;
+    case 2:
+        obj = 100;
+        break;
+    case 3:
+        obj = 120;
+        break;
+    }
+    while (compteur > 0)
+    {
+        clearScreen();
+        cout << "Nombre de coups Restants :" << compteur << endl;
+        cout << "Score :" << Score << endl;
+        couleur(KRouge);
+        displayGridH(grid);
+        initMove(pos);
+        MakeAMove(grid, pos);
+        Remove(grid);
+        gravite(grid);
+        NouvBonbons(grid);
+        --compteur;
+    }
+    Score = Score * 2;
+    if (Score >= obj)
+    {
+        cout << "Bien joué ! Vous avez gagné avec un score de " << Score << "points" << endl;
+    }
+    else
+    {
+        cout << "Vous avez perdu... La prochaine fois vous reviendrez encore plus fort !" << endl;
+    }
+}
+void afficherLore()
+{
+    clearScreen();
+    couleur(KMAgenta);
+    cout << "********************************************" << endl;
+    cout << "       L'AVENTURE DU GRAND CASALI          " << endl;
+    cout << "********************************************" << endl;
+    couleur(KReset);
+    cout << endl;
+
+    cout << "Vous etes " << "\033[1;33m" << "Le Grand Casali" << "\033[0m" << ", un jeune magicien prodige." << endl;
+    cout << "Votre pouvoir ? Deplacer les " << "\033[36m" << "Bonbons Chiffres" << "\033[0m" << " par le pouvoir des sucreries." << endl
+         << endl;
+
+    cout << "Mais une menace plane sur le Royaume de la Confiserie..." << endl;
+    cout << "Le redoutable " << "\033[0m" << "MAKROUD" << "\033[0m" << ", une patisserie ancienne et huileuse," << endl;
+    cout << "a decide d'ecraser tous les bonbons pour regner en maitre !" << endl
+         << endl;
+
+    cout << "Makroud vous attend dans son donjon final." << endl;
+    cout << "Il possede " << "\033[1;31m" << "2000 Points de Vie (PV)" << "\033[0m" << "." << endl;
+    cout << "Chaque alignement de bonbons lui inflige des degats " << "\033[1;36m" << "magiques" << "\033[0m" << " mais les grand bonbons infligent plus de degats." << endl;
+    cout << "Mais vous devez battre des petites sucreries pour voir si vous êtes capable de battre le grand" << "\033[1;31m" << " Makroud." << "\033[1;31m" << endl;
+
+    couleur(KCyan);
+    cout << "Grand Casali, preparez votre baguette (clavier) !" << endl;
+    couleur(KReset);
+
+    cout << endl;
+    cout << "[Appuyez sur ENTREE pour affronter le destin]";
+    cin.ignore();
+    cin.get();
+}
+void BarreDeVie(int Score, int obj)
+{
+    int barreSize = 20;
+    int Barre = ((obj - Score) * barreSize) / obj;
+    couleur(KRouge);
+    for (int i = 0; i < barreSize; ++i)
+    {
+        if (i < Barre)
+            cout << "#";
+        else
+            cout << " ";
+    }
+    couleur(KReset);
+    cout << "] " << (obj - Score) << "/" << obj << " PV" << endl;
+}
+void LimiteHist(mat grid, int obj) // Mode Limite Adapté pour le mode histoire (barre de vie en plus)
+{
+    maPosition pos{0, 0};
+    int compteur = 10;
+    sizemat = 6;
+    nbBonBons = 5;
+    initGrid(grid, sizemat);
+    while (compteur > 0)
+    {
+        clearScreen();
+        cout << "Nombre de coups Restants :" << compteur << endl;
+        cout << "Score :" << Score << endl;
+        displayGrid(grid);
+        BarreDeVie(Score, obj);
+        initMove(pos);
+        MakeAMove(grid, pos);
+        Remove(grid);
+        gravite(grid);
+        NouvBonbons(grid);
+        --compteur;
+        if (Score > obj)
+            cout << "Bien joué ! Vous avez gagné avec un score de " << Score << "points" << endl;
+        break;
+    }
+    if (Score < obj)
+    {
+        cout << "Vous avez perdu... La prochaine fois vous reviendrez encore plus fort !" << endl;
+    }
+}
+void Niveau1()
+{
+    mat matrice;
+    LimiteHist(matrice, 50);
+}
+void Niveau2()
+{
+    mat matrice;
+    LimiteHist(matrice, 120);
+}
+void Boss()
+{
+    mat matrice;
+    cout << "Vous voila contre le maléfique" << "/033[1;31" << "Makroud" << "/033[1;31" << endl
+         << "Bonne chance !";
+    LimiteHist(matrice, 200);
+}
+void Histoire(mat matrice) // Mode Histoire
+{
+    afficherLore();
+    clearScreen();
+    cout << "---Niveau 1---" << endl;
+    Niveau1();
+    clearScreen();
+    cout << "---Niveau 2---" << endl;
+    Niveau2();
+    clearScreen();
+    cout << "---Le Boss Final : Makroud---" << endl;
+    Boss();
+}
 int main()
 {
     int mode = Menu();
-    int difficulte;
     mat matrice;
-    maPosition pos = {0, 0}; // Initialisation importante !
-    if (mode == 1)           // Mode Infini
+    if (mode == 1) // Mode Infini
     {
-        cout << "Taille matrice : " << endl;
-        cin >> sizemat;
-        cout << "Nb Bonbons : " << endl;
-        cin >> nbBonBons;
-        initGrid(matrice, sizemat);
-        while (true)
-        {
-            clearScreen();
-            cout << "Score : " << Score << endl;
-            displayGrid(matrice);
-            Remove(matrice);
-            initMove(pos);           // Choisir la case
-            MakeAMove(matrice, pos); // Choisir la direction et écents (optionnel mais mieux)
-            Remove(matrice);         // Supprime les alignements
-            gravite(matrice);        // Fait tomber
-            NouvBonbons(matrice);    // Remplit
-        }
+        Infini(matrice);
     }
     else if (mode == 2)
     {
-        sizemat = 6;
-        nbBonBons = 5;
-        cout << "Choisissez une difficulté" << endl;
-        cout << "-------------------------" << endl;
-        cout << "1. Facile 200 pts" << endl;
-        cout << "2. Medieum 500 pts" << endl;
-        cout << "3. Difficile 1000 pts" << endl;
-        cout << "-------------------------" << endl;
-        cin >> difficulte;
-        int objectif;
-        switch (difficulte)
-        {
-        case 1:
-            objectif = 200;
-            break;
-        case 2:
-            objectif = 500;
-            break;
-        case 3:
-            objectif = 1000;
-            break;
-        default:
-            cout << "Mauvais choix";
-        }
-        while (Score < difficulte)
-        {
-            clearScreen();
-            initGrid(matrice, sizemat);
-            displayGrid(matrice);
-            cout << "Score :" << Score;
-            initMove(pos);
-            MakeAMove(matrice, pos);
-            Remove(matrice);
-            NouvBonbons(matrice);
-        }
-        cout << "Bravo ! Vous avez gagné !";
+        Speedrun(matrice);
     }
     else if (mode == 3)
     {
-        int compteur = 10;
-        sizemat = 6;
-        nbBonBons = 5;
-        int obj;
-        cout << "Choississez une difficulté" << endl;
-        cout << "--------------------------" << endl;
-        cout << "1. Facile (10 coups pour faire 75)" << endl;
-        cout << "2. Medieum (10 coups pour faire 100)" << endl;
-        cout << "3. Difficile (10 couprs pour faire 120)" << endl;
-        cin >> difficulte;
-        switch (difficulte)
-        {
-        case 1:
-            obj = 75;
-        case 2:
-            obj = 100;
-        case 3:
-            obj = 120;
-        }
-        while (compteur > 0)
-        {
-            clearScreen();
-            cout << "Nombre de coups Restants :" << compteur << endl;
-            cout << "Score :" << Score << endl;
-            initGrid(matrice, sizemat);
-            displayGrid(matrice);
-            initMove(pos);
-            MakeAMove(matrice, pos);
-            Remove(matrice);
-            NouvBonbons(matrice);
-            --compteur;
-        }
+        Limite(matrice);
     }
     else if (mode == 4)
     {
+        Histoire(matrice);
     }
     else if (mode == 5)
     {
-        int compteur = 10;
-        sizemat = 6;
-        nbBonBons = 5;
-        int obj;
-        cout << "Choississez une difficulté" << endl;
-        cout << "--------------------------" << endl;
-        cout << "1. Facile (10 coups pour faire 75)" << endl;
-        cout << "2. Medieum (10 coups pour faire 100)" << endl;
-        cout << "3. Difficile (10 couprs pour faire 120)" << endl;
-        cin >> difficulte;
-        switch (difficulte)
-        {
-        case 1:
-            obj = 75;
-        case 2:
-            obj = 100;
-        case 3:
-            obj = 120;
-        }
-        while (compteur > 0)
-        {
-            clearScreen();
-            cout << "Nombre de coups Restants :" << compteur << endl;
-            cout << "Score :" << Score << endl;
-            initGrid(matrice, sizemat);
-            displayGrid(matrice);
-            initMove(pos);
-            MakeAMove(matrice, pos);
-            Remove(matrice);
-            NouvBonbons(matrice);
-            --compteur;
-        }
+        Hardcore(matrice);
     }
 
     return 0;
