@@ -1,0 +1,18 @@
+<map id="Remove" name="Remove">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,57,81,83"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#af10aa9476eaec2b022b8a60460a2a4f6" title=" " alt="" coords="129,32,308,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,62,117,57,118,62,82,67"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#a613586c02678ecb21f445aff4b9dd1d9" title=" " alt="" coords="356,8,441,33"/>
+<area shape="poly" id="edge9_Node000001_Node000003" title=" " alt="" coords="59,55,90,34,129,17,185,6,242,3,342,9,342,14,242,8,185,12,130,22,92,39,62,59"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a18e6fc310c31cb1b041c3569e6976ec4" title=" " alt="" coords="361,107,436,132"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="62,81,93,101,130,117,187,127,246,130,347,124,348,130,246,136,187,133,129,122,90,105,60,85"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#afc39b3cceb29a2e0f71c6b5d5d3baa64" title=" " alt="" coords="141,81,297,107"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="82,73,127,79,127,84,81,78"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="308,30,342,25,343,31,309,35"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#abd7cea0035e37f35e56dec606a837697" title=" " alt="" coords="369,57,428,83"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="309,55,356,61,355,67,308,60"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="276,55,309,66,366,97,363,102,307,71,274,60"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="270,79,307,66,362,38,364,43,309,71,272,84"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="296,81,355,73,356,78,297,86"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="297,102,348,110,347,115,296,108"/>
+</map>

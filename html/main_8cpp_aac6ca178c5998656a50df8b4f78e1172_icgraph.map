@@ -1,0 +1,14 @@
+<map id="nbBonBons" name="nbBonBons">
+<area shape="rect" id="Node000001" title=" " alt="" coords="419,56,513,81"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a717919043dc6c1a2c430ba94502cadd1" title=" " alt="" coords="279,5,350,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="414,54,350,32,351,27,415,49"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="156,56,211,81"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="405,71,211,71,211,66,405,66"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a938955167b511592d7be2fb6a6e91b8d" title=" " alt="" coords="259,107,371,132"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="415,88,354,109,353,104,414,83"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="269,38,212,61,210,56,267,33"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#ad77726a0d5370b31839d93c1cd0d9f76" title=" " alt="" coords="5,56,108,81"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="142,80,108,80,108,75,142,74"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="122,57,156,58,156,64,122,62"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="267,104,210,82,212,77,269,99"/>
+</map>

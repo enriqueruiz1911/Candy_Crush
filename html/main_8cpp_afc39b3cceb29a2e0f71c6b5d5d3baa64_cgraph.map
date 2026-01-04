@@ -1,0 +1,9 @@
+<map id="atLeastThreeInARow" name="atLeastThreeInARow">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,161,80"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a613586c02678ecb21f445aff4b9dd1d9" title=" " alt="" coords="209,5,295,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,52,195,32,197,37,128,57"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#abd7cea0035e37f35e56dec606a837697" title=" " alt="" coords="223,55,281,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,65,209,65,209,70,161,70"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#a18e6fc310c31cb1b041c3569e6976ec4" title=" " alt="" coords="215,104,289,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="128,77,202,99,200,104,127,83"/>
+</map>
