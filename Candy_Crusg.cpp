@@ -17,7 +17,7 @@ using namespace std;
 int Score(0);
 typedef vector<unsigned> line;
 typedef vector<line> mat;
-struct maPosition
+struct maPosition // pour se repérer dans une matrice
 {
     unsigned abs;
     unsigned ord;
@@ -28,8 +28,8 @@ void couleur(const unsigned &coul)
 }
 void initGrid(mat &grid, const size_t &sizemat) // fonction permettant d'assigner un chiffre à chaque case
 {
-    srand(time(0));
-    if (nbBonBons >= 7 || nbBonBons <= 0)
+    srand(time(0));                       // Pour rendre aléatoire
+    if (nbBonBons >= 7 || nbBonBons <= 0) // Si le NbBonbons demandé est superieur à 6 alors il redemande un autre
     {
         cerr << "Nombre de bonbons invalide" << endl;
         exit(1);
@@ -40,7 +40,7 @@ void initGrid(mat &grid, const size_t &sizemat) // fonction permettant d'assigne
         grid[i].clear();
         for (int j = 0; j < sizemat; j++)
         {
-            grid[i].push_back((rand() % nbBonBons) + 1);
+            grid[i].push_back((rand() % nbBonBons) + 1); // Donne des bonbons aléatoirement selon la variable NbBonbons
         }
     }
 }
@@ -151,15 +151,15 @@ void clearScreen()
 }
 bool atLeastThreeInAColumn(mat &grid, maPosition &pos, unsigned &howMany) // Trois d'affile colone
 {
-    if (pos.ord >= sizemat || pos.abs >= sizemat)
+    if (pos.ord >= sizemat || pos.abs >= sizemat) // Si il y a un dépassement ça retourne faux
         return false;
-    unsigned count(1);
+    unsigned count = 1;
     unsigned valeur = grid[pos.ord][pos.abs];
-    if (valeur == 0)
+    if (valeur == 0) // si il y a un zéro ça retourne faux
     {
         return false;
     }
-    for (unsigned i = pos.ord + 1; i < sizemat; ++i)
+    for (unsigned i = pos.ord + 1; i < sizemat; ++i) // boucle qui incremante +1 à count à chaque fois qu'il y a la meme valeur dans la case d'à côté
     {
         if (grid[i][pos.abs] == valeur)
         {
@@ -170,19 +170,19 @@ bool atLeastThreeInAColumn(mat &grid, maPosition &pos, unsigned &howMany) // Tro
             break;
         }
     }
-    if (count >= 3)
+    if (count >= 3) // si count vaut 3 ou plus alors on augmente le score
     {
         howMany = count;
         Score += howMany * valeur;
         return true;
     }
-    else
+    else // sinon on annule
     {
         howMany = 0;
         return false;
     }
 }
-bool atLeastThreeInARow(mat &grid, maPosition &pos, unsigned &howMany) // Trois d'affile ligne
+bool atLeastThreeInARow(mat &grid, maPosition &pos, unsigned &howMany) // Trois d'affile ligne (meme principe mais dans l'autre sens)
 {
     unsigned count(1);
     unsigned valeur = grid[pos.ord][pos.abs];
@@ -221,15 +221,15 @@ void Remove(mat &matrice) // remplacer les Trois ou plus d'affilé par des zéro
             pos.ord = i;
             pos.abs = j;
 
-            if (atLeastThreeInAColumn(matrice, pos, howMany))
+            if (atLeastThreeInAColumn(matrice, pos, howMany)) // Si Triplette detecté alors
             {
                 for (int k = 0; k < howMany; ++k)
                 {
-                    matrice[i + k][j] = 0;
+                    matrice[i + k][j] = 0; // la triplette en question se transforme en 0
                 }
             }
 
-            if (atLeastThreeInARow(matrice, pos, howMany))
+            if (atLeastThreeInARow(matrice, pos, howMany)) // Pareil ici
             {
                 for (int k = 0; k < howMany; ++k)
                 {
@@ -241,19 +241,19 @@ void Remove(mat &matrice) // remplacer les Trois ou plus d'affilé par des zéro
 }
 void gravite(mat &grid) // faire monter les zéros et descendre les autres
 {
-    for (int j = 0; j < sizemat; ++j)
+    for (int j = 0; j < sizemat; ++j) // Pour parcourir les colonnes
     {
-        int indexEcriture = sizemat - 1;
-        for (int i = sizemat - 1; i >= 0; --i)
+        int indexEcriture = sizemat - 1;       // Prevoir la ou le bonbon va atterir
+        for (int i = sizemat - 1; i >= 0; --i) // On parcourt du bas vers le haut pour ne pas que ceux du haut ait un espace vide au cas ou ceux du bas disparaissent
         {
-            if (grid[i][j] != 0)
+            if (grid[i][j] != 0) // si ce n'est pas vide
             {
-                grid[indexEcriture][j] = grid[i][j];
-                if (indexEcriture != i)
+                grid[indexEcriture][j] = grid[i][j]; // On le fait tomber
+                if (indexEcriture != i)              // s'il est déjà tombé
                 {
-                    grid[i][j] = 0;
+                    grid[i][j] = 0; // on met à son lieu de départ un vide
                 }
-                --indexEcriture;
+                --indexEcriture; // On fait changer la variable index
             }
         }
     }
@@ -265,7 +265,7 @@ void NouvBonbons(mat &grid) // renouveler les zéros en d'autres bonbons
         for (int j = 0; j < sizemat; ++j)
             if (grid[i][j] == 0)
             {
-                grid[i][j] = ((rand() % nbBonBons) + 1);
+                grid[i][j] = ((rand() % nbBonBons) + 1); // Donne des Bonbons aléatoirement selon le NbBonbons donné
             }
     }
 }
@@ -415,7 +415,7 @@ void Hardcore(mat grid) // Mode HardCore
     cout << "3. Difficile (10 couprs pour faire 120)" << endl;
     cin >> difficulte;
     initGrid(grid, sizemat);
-    switch (difficulte)
+    switch (difficulte) // Choix de la difficulté et selon le résultats, une "case" sera appelé
     {
     case 1:
         obj = 75;
@@ -453,6 +453,7 @@ void Hardcore(mat grid) // Mode HardCore
 }
 void afficherLore()
 {
+    // Meilleur Lore que vous n'avez et que vous ne verrez jamais
     clearScreen();
     couleur(KMAgenta);
     cout << "********************************************" << endl;
@@ -486,12 +487,12 @@ void afficherLore()
 }
 void BarreDeVie(int Score, int obj)
 {
-    int barreSize = 20;
-    int Barre = ((obj - Score) * barreSize) / obj;
-    couleur(KRouge);
+    int barreSize = 20;                            // Taille de la barre (Convention)
+    int Barre = ((obj - Score) * barreSize) / obj; // Produit en Croix pour obtenir le nombre de # dans la barre de vie
+    couleur(KRouge);                               // couleur de la barre
     for (int i = 0; i < barreSize; ++i)
     {
-        if (i < Barre)
+        if (i < Barre) // Ecrire des # jusqu'à que i soit plus grand que Barre
             cout << "#";
         else
             cout << " ";
@@ -502,11 +503,11 @@ void BarreDeVie(int Score, int obj)
 void LimiteHist(mat grid, int obj) // Mode Limite Adapté pour le mode histoire (barre de vie en plus)
 {
     maPosition pos{0, 0};
-    int compteur = 10;
-    sizemat = 6;
-    nbBonBons = 5;
-    initGrid(grid, sizemat);
-    while (compteur > 0)
+    int compteur = 10;       // Compteur de coups
+    sizemat = 6;             // taille Tableau
+    nbBonBons = 5;           // Nombre de Bonbons
+    initGrid(grid, sizemat); // Initialiser la matrice
+    while (compteur > 0)     // Jusqua qu'il n'y ai plus de coups
     {
         clearScreen();
         cout << "Nombre de coups Restants :" << compteur << endl;
