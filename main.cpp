@@ -61,30 +61,37 @@ void MakeAMove(mat &grid, maPosition &pos)
     char direction;
     cout << "Entrez la direction du déplacement (Z/Q/S/D) : ";
     cin >> direction;
-    if (direction == 'Z' && pos.ord > 0) // Haut
+
+    // Convertir en majuscule si nécessaire
+    direction = toupper(direction);
+
+    maPosition newPos = pos; // Position cible
+
+    if (direction == 'z' && pos.ord > 0) // Haut
     {
-        swap(grid[pos.ord][pos.abs], grid[pos.ord - 1][pos.abs]);
-        pos.ord -= 1;
+        newPos.ord -= 1;
     }
-    else if (direction == 'S' && pos.ord < sizemat - 1) // Bas
+    else if (direction == 's' && pos.ord < sizemat - 1) // Bas
     {
-        swap(grid[pos.ord][pos.abs], grid[pos.ord + 1][pos.abs]);
-        pos.ord += 1;
+        newPos.ord += 1;
     }
-    else if (direction == 'Q' && pos.abs > 0) // Gauche
+    else if (direction == 'q' && pos.abs > 0) // Gauche
     {
-        swap(grid[pos.ord][pos.abs], grid[pos.ord][pos.abs - 1]);
-        pos.abs -= 1;
+        newPos.abs -= 1;
     }
-    else if (direction == 'D' && pos.abs < sizemat - 1) // Droite
+    else if (direction == 'd' && pos.abs < sizemat - 1) // Droite
     {
-        swap(grid[pos.ord][pos.abs], grid[pos.ord][pos.abs + 1]);
-        pos.abs += 1;
+        newPos.abs += 1;
     }
     else
     {
         cout << "Déplacement invalide!" << endl;
+        return;
     }
+
+    // Échanger les bonbons
+    swap(grid[pos.ord][pos.abs], grid[newPos.ord][newPos.abs]);
+
 }
 void displayGrid(const mat &grid)
 {
